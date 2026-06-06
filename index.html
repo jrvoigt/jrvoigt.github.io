@@ -304,7 +304,7 @@
       padding: 2.5rem 1.5rem 2rem;
     }
 
-    .orbit-svg { width: 100%; max-width: 580px; display: block; margin: 0 auto; cursor: default; }
+    .orbit-svg { width: 100%; max-width: 780px; display: block; margin: 0 auto; cursor: default; }
 
     .orbit-node { cursor: pointer; transition: opacity 0.15s; }
     .orbit-node:hover { opacity: 0.78; }
@@ -549,8 +549,27 @@
 
       <div class="framework-canvas">
 
-        <svg class="orbit-svg" viewBox="0 0 560 570" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Customer Value System interactive orbit diagram">
+        <svg class="orbit-svg" viewBox="0 0 620 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Customer Value System interactive orbit diagram">
+          <!--
+            Layout plan (cx=310, cy=330, orbit r=220):
+            Node centres on orbit:
+              1 Interactions  12-o'clock  310, 110  node h=50 → box y=85..135
+              2 RQ            2-o'clock   (~500,220) node h=50 → box y=195..245
+              3 CLV           4-o'clock   (~500,440) node h=50 → box y=415..465
+              4 Attribution   6-o'clock   310, 550  node h=50 → box y=525..575
+              5 Sourcing      8-o'clock   (~120,440) node h=50 → box y=415..465
+              6 VOM          10-o'clock   (~120,220) node h=50 → box y=195..245
 
+            Arc labels sit in the midpoints between nodes, well clear of boxes:
+              signal:   between N1 top-right and N2 top — ~(460,155)
+              outcome:  between N2 right and N3 right   — ~(560,330) text-anchor start at x=542
+              proof:    between N3 bottom and N4 right  — ~(460,510)
+              allocate: between N4 left and N5 bottom   — ~(160,510)
+              capture:  between N5 left and N6 left     — ~(60,330)  text-anchor end at x=78
+              reinvest: between N6 top and N1 top-left  — ~(160,155)
+
+            Trap arc: a wide arc above the diagram, y around 40, well above node 1 (y=85)
+          -->
           <defs>
             <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
               <path d="M2 1L8 5L2 9" fill="none" stroke="#C8C0B0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -558,91 +577,95 @@
           </defs>
 
           <!-- outer orbit ring -->
-          <circle cx="280" cy="286" r="214" fill="none" stroke="#E0DBD2" stroke-width="0.75" stroke-dasharray="3 7"/>
+          <circle cx="310" cy="330" r="220" fill="none" stroke="#E0DBD2" stroke-width="0.75" stroke-dasharray="3 7"/>
 
-          <!-- trap arc label -->
-          <path id="trap-arc" d="M 108 150 A 186 186 0 0 1 452 150" fill="none"/>
-          <text font-family="'DM Mono', monospace" font-size="8.5" letter-spacing="0.08em" fill="#C8C0B0">
-            <textPath href="#trap-arc" startOffset="10%">THE COMMODITIZATION TRAP — the broken model this system is designed to replace</textPath>
-          </text>
+          <!-- trap label — flat, centered, above diagram -->
+          <text font-family="'DM Mono', monospace" font-size="8.5" letter-spacing="0.1em" fill="#6B5A3E" text-anchor="middle" x="310" y="30">THE COMMODITIZATION TRAP — the broken model this system replaces</text>
+          <line x1="80" y1="36" x2="540" y2="36" stroke="#C8B89A" stroke-width="0.5" stroke-dasharray="4 4"/>
 
-          <!-- spoke lines (node edge to core edge) -->
-          <line x1="280" y1="168" x2="280" y2="214" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
-          <line x1="390" y1="214" x2="342" y2="248" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
-          <line x1="390" y1="356" x2="342" y2="322" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
-          <line x1="280" y1="402" x2="280" y2="358" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
-          <line x1="170" y1="356" x2="220" y2="322" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
-          <line x1="170" y1="214" x2="220" y2="248" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <!-- spoke lines: node inner-edge → core circle edge (r=72) -->
+          <line x1="310" y1="135" x2="310" y2="258" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="476" y1="245" x2="375" y2="284" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="476" y1="415" x2="375" y2="378" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="310" y1="525" x2="310" y2="402" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="144" y1="415" x2="246" y2="378" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="144" y1="245" x2="246" y2="284" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
 
           <!-- orbit connectors clockwise -->
-          <path d="M 354 118 Q 418 144 412 184" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
-          <path d="M 442 222 Q 450 286 440 352" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
-          <path d="M 410 376 Q 368 436 328 450" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
-          <path d="M 232 450 Q 192 436 150 376" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
-          <path d="M 120 352 Q 110 286 120 222" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
-          <path d="M 148 184 Q 144 148 208 118" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 388 148 Q 458 168 470 220" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 490 258 Q 500 330 488 400" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 460 448 Q 410 500 362 530" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 258 530 Q 210 500 160 448" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 130 400 Q 120 330 132 258" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 150 220 Q 162 168 232 148" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
 
-          <!-- arc step labels -->
-          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="middle" x="410" y="108">signal</text>
-          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="start"  x="456" y="289">outcome</text>
-          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="middle" x="398" y="462">proof</text>
-          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="middle" x="162" y="462">allocate</text>
-          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="end"    x="104" y="289">capture</text>
-          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="middle" x="148" y="108">reinvest</text>
+          <!-- arc step labels — positioned at midpoint of each connector arc, outside the orbit ring -->
+          <!-- signal: between N1 (top) and N2 (top-right), outside ring at ~1-o'clock -->
+          <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.05em" text-anchor="start" x="516" y="178">signal</text>
+          <!-- outcome: between N2 and N3, right side outside ring -->
+          <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.05em" text-anchor="start" x="516" y="334">outcome</text>
+          <!-- proof: between N3 and N4, bottom-right outside ring -->
+          <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.05em" text-anchor="start" x="516" y="488">proof</text>
+          <!-- allocate: between N4 and N5, bottom-left outside ring -->
+          <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.05em" text-anchor="end" x="104" y="488">allocate</text>
+          <!-- capture: between N5 and N6, left side outside ring -->
+          <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.05em" text-anchor="end" x="104" y="334">capture</text>
+          <!-- reinvest: between N6 and N1, top-left outside ring -->
+          <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.05em" text-anchor="end" x="104" y="178">reinvest</text>
 
           <!-- CENTRE -->
           <g class="orbit-center" onclick="selectNode('engine')" role="button" aria-label="The value engine — click to explore">
-            <circle cx="280" cy="286" r="70" fill="#F7F5F0" stroke="#8B7355" stroke-width="1"/>
-            <text font-family="'Playfair Display', serif" font-size="13.5" font-weight="500" fill="#1a1a1a" text-anchor="middle" x="280" y="277">The value</text>
-            <text font-family="'Playfair Display', serif" font-size="13.5" font-weight="500" fill="#1a1a1a" text-anchor="middle" x="280" y="295">engine</text>
-            <text font-family="'DM Mono', monospace" font-size="8" fill="#8B7355" letter-spacing="0.06em" text-anchor="middle" x="280" y="313">self-reinforcing</text>
+            <circle cx="310" cy="330" r="72" fill="#F7F5F0" stroke="#8B7355" stroke-width="1.25"/>
+            <text font-family="'Playfair Display', serif" font-size="14" font-weight="500" fill="#1a1a1a" text-anchor="middle" x="310" y="320">The value</text>
+            <text font-family="'Playfair Display', serif" font-size="14" font-weight="500" fill="#1a1a1a" text-anchor="middle" x="310" y="338">engine</text>
+            <text font-family="'DM Mono', monospace" font-size="9" fill="#5C4E35" letter-spacing="0.06em" text-anchor="middle" x="310" y="358">self-reinforcing</text>
           </g>
 
-          <!-- NODE 1: Interactions — 12 o'clock -->
+          <!-- NODE 1: Interactions — 12 o'clock  cx=310 cy=110 -->
           <g class="orbit-node" onclick="selectNode('interactions')" role="button" aria-label="Customer interactions">
-            <rect x="188" y="78" width="184" height="46" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
-            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="280" y="98">Customer interactions</text>
-            <text font-family="'DM Mono', monospace" font-size="8" fill="#8B7355" letter-spacing="0.05em" text-anchor="middle" x="280" y="114">Voice · Chat · AI · Self-service</text>
+            <rect x="208" y="85" width="204" height="50" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="310" y="107">Customer interactions</text>
+            <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.04em" text-anchor="middle" x="310" y="124">Voice · Chat · AI · Self-service</text>
           </g>
 
-          <!-- NODE 2: RQ — 2 o'clock -->
+          <!-- NODE 2: RQ — 2 o'clock  cx≈500 cy≈220 -->
           <g class="orbit-node" onclick="selectNode('rq')" role="button" aria-label="Relationship quality">
-            <rect x="362" y="172" width="160" height="46" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
-            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="442" y="192">Relationship quality</text>
-            <text font-family="'DM Mono', monospace" font-size="8" fill="#6B5A3E" letter-spacing="0.05em" text-anchor="middle" x="442" y="208">Trust · Commitment · Ease</text>
+            <rect x="402" y="195" width="182" height="50" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="493" y="217">Relationship quality</text>
+            <text font-family="'DM Mono', monospace" font-size="9" fill="#3D2E1A" letter-spacing="0.04em" text-anchor="middle" x="493" y="234">Trust · Commitment · Ease</text>
           </g>
 
-          <!-- NODE 3: CLV — 4 o'clock -->
+          <!-- NODE 3: CLV — 4 o'clock  cx≈500 cy≈440 -->
           <g class="orbit-node" onclick="selectNode('clv')" role="button" aria-label="Customer lifetime value">
-            <rect x="362" y="350" width="160" height="46" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
-            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="442" y="370">Customer lifetime value</text>
-            <text font-family="'DM Mono', monospace" font-size="8" fill="#6B5A3E" letter-spacing="0.05em" text-anchor="middle" x="442" y="386">Retention · Spend · Advocacy</text>
+            <rect x="402" y="415" width="182" height="50" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="493" y="437">Customer lifetime value</text>
+            <text font-family="'DM Mono', monospace" font-size="9" fill="#3D2E1A" letter-spacing="0.04em" text-anchor="middle" x="493" y="454">Retention · Spend · Advocacy</text>
           </g>
 
-          <!-- NODE 4: Attribution — 6 o'clock -->
+          <!-- NODE 4: Attribution — 6 o'clock  cx=310 cy=550 -->
           <g class="orbit-node" onclick="selectNode('attribution')" role="button" aria-label="Value attribution">
-            <rect x="174" y="440" width="212" height="46" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
-            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="280" y="460">Value attribution</text>
-            <text font-family="'DM Mono', monospace" font-size="8" fill="#8B7355" letter-spacing="0.05em" text-anchor="middle" x="280" y="476">Proves value · enables gainshare</text>
+            <rect x="174" y="525" width="272" height="50" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="310" y="547">Value attribution</text>
+            <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.04em" text-anchor="middle" x="310" y="564">Proves value · enables gainshare</text>
           </g>
 
-          <!-- NODE 5: Sourcing — 8 o'clock -->
+          <!-- NODE 5: Sourcing — 8 o'clock  cx≈120 cy≈440 -->
           <g class="orbit-node" onclick="selectNode('sourcing')" role="button" aria-label="Smart sourcing">
-            <rect x="38" y="350" width="160" height="46" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
-            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="118" y="370">Smart sourcing</text>
-            <text font-family="'DM Mono', monospace" font-size="8" fill="#8B7355" letter-spacing="0.05em" text-anchor="middle" x="118" y="386">Allocate effort by value tier</text>
+            <rect x="36" y="415" width="182" height="50" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="127" y="437">Smart sourcing</text>
+            <text font-family="'DM Mono', monospace" font-size="9" fill="#4A3B28" letter-spacing="0.04em" text-anchor="middle" x="127" y="454">Allocate effort by value tier</text>
           </g>
 
-          <!-- NODE 6: VOM — 10 o'clock -->
+          <!-- NODE 6: VOM — 10 o'clock  cx≈120 cy≈220 -->
           <g class="orbit-node" onclick="selectNode('vom')" role="button" aria-label="Value operations">
-            <rect x="38" y="172" width="160" height="46" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
-            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="118" y="192">Value operations</text>
-            <text font-family="'DM Mono', monospace" font-size="8" fill="#6B5A3E" letter-spacing="0.05em" text-anchor="middle" x="118" y="208">VOM · Capture · Reinvest</text>
+            <rect x="36" y="195" width="182" height="50" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="127" y="217">Value operations</text>
+            <text font-family="'DM Mono', monospace" font-size="9" fill="#3D2E1A" letter-spacing="0.04em" text-anchor="middle" x="127" y="234">VOM · Capture · Reinvest</text>
           </g>
 
-          <!-- thesis -->
-          <line x1="40" y1="538" x2="520" y2="538" stroke="#E0DBD2" stroke-width="0.5"/>
-          <text font-family="'DM Mono', monospace" font-size="7.5" fill="#B0A898" letter-spacing="0.04em" text-anchor="middle" x="280" y="554">Strong RQ → rising CLV → proven attribution → smarter allocation → systematic operations → reinvestment → stronger RQ</text>
+          <!-- thesis line -->
+          <line x1="40" y1="624" x2="580" y2="624" stroke="#E0DBD2" stroke-width="0.5"/>
+          <text font-family="'DM Mono', monospace" font-size="8" fill="#5C4E35" letter-spacing="0.03em" text-anchor="middle" x="310" y="642">Strong RQ → rising CLV → proven attribution → smarter allocation → systematic operations → reinvestment → stronger RQ</text>
 
         </svg>
 
