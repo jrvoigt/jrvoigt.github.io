@@ -25,9 +25,7 @@
     a { color: inherit; }
     img { display: block; max-width: 100%; height: auto; }
 
-    /* ══════════════════════════════════
-       NAVIGATION BAR
-    ══════════════════════════════════ */
+    /* NAV */
     nav {
       position: sticky; top: 0; z-index: 100;
       background: rgba(247,245,240,0.97);
@@ -45,15 +43,13 @@
       cursor: pointer;
     }
 
-    .nav-tabs {
-      list-style: none; display: flex; gap: 0;
-    }
+    .nav-tabs { list-style: none; display: flex; gap: 0; }
 
     .nav-tabs li a {
       font-family: 'DM Mono', monospace; font-size: 12px;
       font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase;
       color: #888; text-decoration: none;
-      padding: 0 1.2rem; height: 62px;
+      padding: 0 1.1rem; height: 62px;
       display: flex; align-items: center;
       border-bottom: 2px solid transparent;
       transition: color 0.2s, border-color 0.2s;
@@ -67,20 +63,14 @@
       cursor: pointer; color: #1a1a1a; font-size: 24px;
     }
 
-    /* ══════════════════════════════════
-       TAB SYSTEM
-    ══════════════════════════════════ */
+    /* TAB SYSTEM */
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* ══════════════════════════════════
-       LAYOUT
-    ══════════════════════════════════ */
+    /* LAYOUT */
     .page-wrap { max-width: 920px; margin: 0 auto; padding: 0 2.5rem; }
 
-    /* ══════════════════════════════════
-       HOME TAB
-    ══════════════════════════════════ */
+    /* HOME */
     .home-hero {
       padding: 5rem 0 4rem;
       display: grid; grid-template-columns: 1fr 240px;
@@ -118,7 +108,6 @@
       padding: 5px 13px; border-radius: 2px;
     }
 
-    /* Home nav cards */
     .home-nav-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
       margin-bottom: 4rem;
@@ -157,25 +146,17 @@
       font-size: 12.5px; color: #888; font-weight: 300; line-height: 1.6;
     }
 
-    .home-nav-arrow {
-      font-size: 16px; color: #C8C0B0; margin-top: auto;
-    }
-
+    .home-nav-arrow { font-size: 16px; color: #C8C0B0; margin-top: auto; }
     .home-nav-card:hover .home-nav-arrow { color: #8B7355; }
 
-    /* Portrait */
     .hero-portrait {
       aspect-ratio: 2/3; border-radius: 4px; overflow: hidden;
       border: 1px solid #D0C8BC; background: #DDD9D0;
     }
 
-    .hero-portrait img {
-      width: 100%; height: 100%; object-fit: cover; object-position: center center;
-    }
+    .hero-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
 
-    /* ══════════════════════════════════
-       SECTION HEADER
-    ══════════════════════════════════ */
+    /* SECTION HEADER */
     .section-wrap { padding: 3.5rem 0; }
 
     .section-label {
@@ -186,9 +167,7 @@
     }
     .section-label::after { content: ''; flex: 1; height: 1px; background: #D8D3C8; }
 
-    /* ══════════════════════════════════
-       RESEARCH TAB
-    ══════════════════════════════════ */
+    /* RESEARCH */
     .publications-list { display: flex; flex-direction: column; gap: 2px; }
 
     .pub-item {
@@ -211,7 +190,6 @@
     }
 
     .pub-meta { font-size: 13px; color: #777; font-weight: 300; }
-
     .pub-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
 
     .pub-btn {
@@ -224,22 +202,17 @@
     .pub-btn:hover { background: #EDE8DF; border-color: #B0A898; color: #333; }
     .pub-btn i { font-size: 14px; }
 
-    /* ══════════════════════════════════
-       ABOUT TAB
-    ══════════════════════════════════ */
+    /* ABOUT */
     .about-grid { display: grid; grid-template-columns: 1fr 300px; gap: 3.5rem; align-items: start; }
-
     .about-text { font-size: 15.5px; color: #333; font-weight: 300; line-height: 1.95; }
     .about-text p + p { margin-top: 1.1rem; }
     .about-text a { color: #8B7355; text-decoration: underline; }
 
     .cv-block { background: #fff; border: 1px solid #E0DBD2; border-radius: 3px; padding: 1.5rem; }
     .cv-block + .cv-block { margin-top: 10px; }
-
     .cv-item { padding: 0.8rem 0; border-bottom: 1px solid #EDE8DF; }
     .cv-item:first-child { padding-top: 0; }
     .cv-item:last-child { border-bottom: none; padding-bottom: 0; }
-
     .cv-year { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #8B7355; margin-bottom: 3px; }
     .cv-role { font-size: 14px; font-weight: 400; color: #111; margin-bottom: 2px; line-height: 1.4; }
     .cv-org { font-size: 13px; color: #777; font-weight: 300; }
@@ -252,7 +225,6 @@
     }
 
     .achievement-list { display: flex; flex-direction: column; gap: 2px; }
-
     .achievement-item {
       background: #fff; border: 1px solid #E0DBD2; border-radius: 3px;
       padding: 1rem 1.25rem; font-size: 14px; color: #333;
@@ -261,11 +233,8 @@
     }
     .achievement-item i { color: #8B7355; font-size: 16px; flex-shrink: 0; margin-top: 3px; }
 
-    /* ══════════════════════════════════
-       MEDIA TAB
-    ══════════════════════════════════ */
+    /* MEDIA */
     .media-list { display: flex; flex-direction: column; gap: 2px; }
-
     .media-item {
       background: #fff; border: 1px solid #E0DBD2; border-radius: 3px;
       padding: 1.25rem 1.5rem;
@@ -275,34 +244,26 @@
       transition: border-color 0.2s, transform 0.15s;
     }
     .media-item:hover { border-color: #B0A898; transform: translateY(-1px); }
-
     .media-icon-wrap {
       width: 44px; height: 44px; border-radius: 3px;
       background: #EDE8DF; display: flex; align-items: center;
       justify-content: center; color: #6B5A3E; font-size: 20px; flex-shrink: 0;
     }
     .media-icon-wrap.video { background: #E5E0F0; color: #5A4A7A; }
-
     .media-type {
       font-family: 'DM Mono', monospace; font-size: 10.5px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: #8B7355; margin-bottom: 4px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: #8B7355; margin-bottom: 4px;
     }
-
     .media-title {
       font-family: 'Playfair Display', serif; font-size: 16px;
       font-weight: 500; color: #111; line-height: 1.4; margin-bottom: 4px;
     }
-
     .media-meta { font-size: 13px; color: #777; font-weight: 300; }
     .media-arrow { color: #B0A898; font-size: 18px; justify-self: end; }
     .media-item:hover .media-arrow { color: #6B5A3E; }
 
-    /* ══════════════════════════════════
-       CONTACT TAB
-    ══════════════════════════════════ */
+    /* CONTACT */
     .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-
     .contact-card {
       background: #fff; border: 1px solid #E0DBD2; border-radius: 3px;
       padding: 1.4rem; text-decoration: none; color: inherit;
@@ -310,35 +271,140 @@
       transition: border-color 0.2s, transform 0.15s;
     }
     .contact-card:hover { border-color: #B0A898; transform: translateY(-2px); }
-
     .contact-icon {
       width: 38px; height: 38px; background: #EDE8DF; border-radius: 3px;
       display: flex; align-items: center; justify-content: center;
       color: #6B5A3E; font-size: 20px;
     }
-
     .contact-label {
       font-family: 'DM Mono', monospace; font-size: 10.5px;
       letter-spacing: 0.1em; text-transform: uppercase; color: #8B7355;
     }
-
     .contact-value { font-size: 13px; color: #333; font-weight: 300; word-break: break-word; }
 
-    /* ══════════════════════════════════
-       FOOTER
-    ══════════════════════════════════ */
+    /* FOOTER */
     footer {
       border-top: 1px solid #D8D3C8; margin-top: 2rem;
       padding: 2rem 0; display: flex;
       justify-content: space-between; align-items: center;
     }
-
     .footer-name { font-family: 'Playfair Display', serif; font-size: 15px; color: #777; }
     .footer-copy { font-family: 'DM Mono', monospace; font-size: 11px; color: #aaa; letter-spacing: 0.05em; }
 
     /* ══════════════════════════════════
-       RESPONSIVE
+       FRAMEWORK TAB
     ══════════════════════════════════ */
+    .framework-intro {
+      font-size: 15.5px; color: #444; font-weight: 300; line-height: 1.9;
+      max-width: 700px; margin-bottom: 2.5rem;
+    }
+
+    .framework-canvas {
+      background: #fff; border: 1px solid #E0DBD2; border-radius: 4px;
+      padding: 2.5rem 1.5rem 2rem;
+    }
+
+    .orbit-svg { width: 100%; max-width: 580px; display: block; margin: 0 auto; cursor: default; }
+
+    .orbit-node { cursor: pointer; transition: opacity 0.15s; }
+    .orbit-node:hover { opacity: 0.78; }
+    .orbit-node rect, .orbit-node circle { transition: stroke 0.15s; }
+    .orbit-node:hover rect { stroke: #8B7355; }
+    .orbit-center { cursor: pointer; transition: opacity 0.15s; }
+    .orbit-center:hover { opacity: 0.82; }
+    .orbit-center:hover circle { stroke: #5C4E35; }
+
+    .diagram-hint {
+      font-family: 'DM Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.06em; color: #AAA199; text-align: center;
+      margin-top: 1.25rem;
+    }
+
+    /* Detail panel */
+    .detail-panel {
+      background: #fff; border: 1px solid #D8D3C8; border-radius: 3px;
+      margin-top: 1.75rem; display: none; overflow: hidden;
+    }
+    .detail-panel.visible { display: block; }
+
+    .detail-header {
+      background: #EDE8DF; padding: 1rem 1.5rem;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      border-bottom: 1px solid #D8D3C8; gap: 1rem;
+    }
+
+    .detail-tag {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: #8B7355;
+      margin-bottom: 4px;
+    }
+
+    .detail-title {
+      font-family: 'Playfair Display', serif; font-size: 20px;
+      font-weight: 500; color: #111; line-height: 1.2;
+    }
+
+    .detail-close {
+      background: none; border: none; cursor: pointer;
+      color: #AAA199; font-size: 20px; padding: 2px; flex-shrink: 0;
+      margin-top: 2px; transition: color 0.15s;
+    }
+    .detail-close:hover { color: #5C4E35; }
+
+    .detail-body {
+      padding: 1.5rem 1.5rem 1.75rem;
+      font-size: 14.5px; color: #333; font-weight: 300; line-height: 1.9;
+    }
+
+    .detail-q {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      letter-spacing: 0.05em; color: #8B7355; font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .detail-body p { margin-bottom: 0.9rem; }
+
+    .detail-pills {
+      display: flex; flex-wrap: wrap; gap: 6px; margin: 1rem 0;
+    }
+
+    .detail-pill {
+      font-family: 'DM Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.05em; background: #EDE8DF; color: #5C4E35;
+      padding: 4px 12px; border-radius: 2px;
+    }
+
+    .detail-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 1.25rem 0;
+    }
+
+    .detail-cell {
+      background: #F7F5F0; border: 1px solid #E0DBD2; border-radius: 3px;
+      padding: 0.9rem 1rem;
+    }
+
+    .detail-cell-title {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: #8B7355;
+      margin-bottom: 6px;
+    }
+
+    .detail-cell-body {
+      font-size: 13px; color: #444; font-weight: 300; line-height: 1.65;
+    }
+
+    .detail-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.25rem; }
+
+    .detail-link {
+      font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.05em;
+      padding: 7px 14px; border: 1px solid #C8C0B0; border-radius: 2px;
+      background: transparent; color: #555; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .detail-link:hover { background: #EDE8DF; border-color: #B0A898; color: #333; }
+
+    /* RESPONSIVE */
     @media (max-width: 720px) {
       nav { padding: 0 1.5rem; }
       .nav-tabs { display: none; }
@@ -351,7 +417,6 @@
       .nav-tabs.open li a { height: 44px; padding: 0 1.5rem; border-bottom: none; }
       .nav-tabs.open li a.active { background: #EDE8DF; }
       .nav-toggle { display: block; }
-
       .page-wrap { padding: 0 1.5rem; }
       .home-hero { grid-template-columns: 1fr; padding: 3rem 0 2rem; gap: 2rem; }
       .home-hero h1 { font-size: 34px; }
@@ -361,6 +426,7 @@
       .contact-grid { grid-template-columns: repeat(2, 1fr); }
       .pub-item { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 8px; text-align: center; }
+      .detail-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 420px) {
@@ -372,24 +438,23 @@
 </head>
 <body>
 
-<!-- ═══ NAV ═══ -->
+<!-- NAV -->
 <nav>
   <span class="nav-name" onclick="showTab('home')">Jens R. Voigt</span>
   <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-tabs').classList.toggle('open')">
     <i class="ti ti-menu-2" aria-hidden="true"></i>
   </button>
   <ul class="nav-tabs">
-    <li><a href="#" class="active" data-tab="home"     onclick="showTab('home');return false;">Home</a></li>
-    <li><a href="#" data-tab="research"  onclick="showTab('research');return false;">Research</a></li>
-    <li><a href="#" data-tab="about"     onclick="showTab('about');return false;">About</a></li>
-    <li><a href="#" data-tab="media"     onclick="showTab('media');return false;">Media</a></li>
-    <li><a href="#" data-tab="contact"   onclick="showTab('contact');return false;">Contact</a></li>
+    <li><a href="#" class="active" data-tab="home"      onclick="showTab('home');return false;">Home</a></li>
+    <li><a href="#" data-tab="framework"  onclick="showTab('framework');return false;">Framework</a></li>
+    <li><a href="#" data-tab="research"   onclick="showTab('research');return false;">Research</a></li>
+    <li><a href="#" data-tab="about"      onclick="showTab('about');return false;">About</a></li>
+    <li><a href="#" data-tab="media"      onclick="showTab('media');return false;">Media</a></li>
+    <li><a href="#" data-tab="contact"    onclick="showTab('contact');return false;">Contact</a></li>
   </ul>
 </nav>
 
-<!-- ═══════════════════════════════════════
-     HOME TAB
-════════════════════════════════════════ -->
+<!-- ═══ HOME ═══ -->
 <div id="tab-home" class="tab-panel active">
   <div class="page-wrap">
     <div class="home-hero">
@@ -398,7 +463,7 @@
       <div>
         <p class="hero-eyebrow">BPO Economist &amp; Independent Researcher</p>
         <p class="hero-credentials">MSc Finance &middot; Executive MBA &middot; Diplom-Betriebswirt (FH)</p>
-        <h1>Jens R.<br>Voigt</h1>
+        <h1>Jens R. Voigt</h1>
         <p class="hero-bio">
           I research the economics of outsourcing, AI-driven business model transformation,
           and customer value creation. My work examines the structural forces reshaping
@@ -469,9 +534,145 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     RESEARCH TAB
-════════════════════════════════════════ -->
+<!-- ═══ FRAMEWORK ═══ -->
+<div id="tab-framework" class="tab-panel">
+  <div class="page-wrap">
+    <div class="section-wrap">
+      <div class="section-label">The Customer Value System</div>
+
+      <p class="framework-intro">
+        A unified theory of customer operations and outsourcing. Every idea in my research connects
+        to a single system of value — generated in customer interactions, flowing through relationship
+        quality into economic outcomes, measured, allocated, operationalised, captured commercially,
+        and reinvested to compound the loop. Click any node to explore that layer of the framework.
+      </p>
+
+      <div class="framework-canvas">
+
+        <svg class="orbit-svg" viewBox="0 0 560 570" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Customer Value System interactive orbit diagram">
+
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#C8C0B0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <!-- outer orbit ring -->
+          <circle cx="280" cy="286" r="214" fill="none" stroke="#E0DBD2" stroke-width="0.75" stroke-dasharray="3 7"/>
+
+          <!-- trap arc label -->
+          <path id="trap-arc" d="M 108 150 A 186 186 0 0 1 452 150" fill="none"/>
+          <text font-family="'DM Mono', monospace" font-size="8.5" letter-spacing="0.08em" fill="#C8C0B0">
+            <textPath href="#trap-arc" startOffset="10%">THE COMMODITIZATION TRAP — the broken model this system is designed to replace</textPath>
+          </text>
+
+          <!-- spoke lines (node edge to core edge) -->
+          <line x1="280" y1="168" x2="280" y2="214" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="390" y1="214" x2="342" y2="248" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="390" y1="356" x2="342" y2="322" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="280" y1="402" x2="280" y2="358" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="170" y1="356" x2="220" y2="322" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="170" y1="214" x2="220" y2="248" stroke="#EDE8DF" stroke-width="1" stroke-dasharray="3 5"/>
+
+          <!-- orbit connectors clockwise -->
+          <path d="M 354 118 Q 418 144 412 184" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 442 222 Q 450 286 440 352" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 410 376 Q 368 436 328 450" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 232 450 Q 192 436 150 376" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 120 352 Q 110 286 120 222" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+          <path d="M 148 184 Q 144 148 208 118" fill="none" stroke="#D8D3C8" stroke-width="1" marker-end="url(#arr)"/>
+
+          <!-- arc step labels -->
+          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="middle" x="410" y="108">signal</text>
+          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="start"  x="456" y="289">outcome</text>
+          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="middle" x="398" y="462">proof</text>
+          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="middle" x="162" y="462">allocate</text>
+          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="end"    x="104" y="289">capture</text>
+          <text font-family="'DM Mono', monospace" font-size="8" fill="#B0A898" letter-spacing="0.05em" text-anchor="middle" x="148" y="108">reinvest</text>
+
+          <!-- CENTRE -->
+          <g class="orbit-center" onclick="selectNode('engine')" role="button" aria-label="The value engine — click to explore">
+            <circle cx="280" cy="286" r="70" fill="#F7F5F0" stroke="#8B7355" stroke-width="1"/>
+            <text font-family="'Playfair Display', serif" font-size="13.5" font-weight="500" fill="#1a1a1a" text-anchor="middle" x="280" y="277">The value</text>
+            <text font-family="'Playfair Display', serif" font-size="13.5" font-weight="500" fill="#1a1a1a" text-anchor="middle" x="280" y="295">engine</text>
+            <text font-family="'DM Mono', monospace" font-size="8" fill="#8B7355" letter-spacing="0.06em" text-anchor="middle" x="280" y="313">self-reinforcing</text>
+          </g>
+
+          <!-- NODE 1: Interactions — 12 o'clock -->
+          <g class="orbit-node" onclick="selectNode('interactions')" role="button" aria-label="Customer interactions">
+            <rect x="188" y="78" width="184" height="46" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="280" y="98">Customer interactions</text>
+            <text font-family="'DM Mono', monospace" font-size="8" fill="#8B7355" letter-spacing="0.05em" text-anchor="middle" x="280" y="114">Voice · Chat · AI · Self-service</text>
+          </g>
+
+          <!-- NODE 2: RQ — 2 o'clock -->
+          <g class="orbit-node" onclick="selectNode('rq')" role="button" aria-label="Relationship quality">
+            <rect x="362" y="172" width="160" height="46" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="442" y="192">Relationship quality</text>
+            <text font-family="'DM Mono', monospace" font-size="8" fill="#6B5A3E" letter-spacing="0.05em" text-anchor="middle" x="442" y="208">Trust · Commitment · Ease</text>
+          </g>
+
+          <!-- NODE 3: CLV — 4 o'clock -->
+          <g class="orbit-node" onclick="selectNode('clv')" role="button" aria-label="Customer lifetime value">
+            <rect x="362" y="350" width="160" height="46" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="442" y="370">Customer lifetime value</text>
+            <text font-family="'DM Mono', monospace" font-size="8" fill="#6B5A3E" letter-spacing="0.05em" text-anchor="middle" x="442" y="386">Retention · Spend · Advocacy</text>
+          </g>
+
+          <!-- NODE 4: Attribution — 6 o'clock -->
+          <g class="orbit-node" onclick="selectNode('attribution')" role="button" aria-label="Value attribution">
+            <rect x="174" y="440" width="212" height="46" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="280" y="460">Value attribution</text>
+            <text font-family="'DM Mono', monospace" font-size="8" fill="#8B7355" letter-spacing="0.05em" text-anchor="middle" x="280" y="476">Proves value · enables gainshare</text>
+          </g>
+
+          <!-- NODE 5: Sourcing — 8 o'clock -->
+          <g class="orbit-node" onclick="selectNode('sourcing')" role="button" aria-label="Smart sourcing">
+            <rect x="38" y="350" width="160" height="46" rx="3" fill="#fff" stroke="#D8D3C8" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="118" y="370">Smart sourcing</text>
+            <text font-family="'DM Mono', monospace" font-size="8" fill="#8B7355" letter-spacing="0.05em" text-anchor="middle" x="118" y="386">Allocate effort by value tier</text>
+          </g>
+
+          <!-- NODE 6: VOM — 10 o'clock -->
+          <g class="orbit-node" onclick="selectNode('vom')" role="button" aria-label="Value operations">
+            <rect x="38" y="172" width="160" height="46" rx="3" fill="#EDE8DF" stroke="#C8C0B0" stroke-width="0.75"/>
+            <text font-family="'Playfair Display', serif" font-size="12.5" font-weight="500" fill="#111" text-anchor="middle" x="118" y="192">Value operations</text>
+            <text font-family="'DM Mono', monospace" font-size="8" fill="#6B5A3E" letter-spacing="0.05em" text-anchor="middle" x="118" y="208">VOM · Capture · Reinvest</text>
+          </g>
+
+          <!-- thesis -->
+          <line x1="40" y1="538" x2="520" y2="538" stroke="#E0DBD2" stroke-width="0.5"/>
+          <text font-family="'DM Mono', monospace" font-size="7.5" fill="#B0A898" letter-spacing="0.04em" text-anchor="middle" x="280" y="554">Strong RQ → rising CLV → proven attribution → smarter allocation → systematic operations → reinvestment → stronger RQ</text>
+
+        </svg>
+
+        <p class="diagram-hint">Click any node to explore that layer of the framework in depth</p>
+
+        <!-- DETAIL PANEL -->
+        <div id="detail-panel" class="detail-panel">
+          <div class="detail-header">
+            <div>
+              <div class="detail-tag" id="d-tag"></div>
+              <div class="detail-title" id="d-title"></div>
+            </div>
+            <button class="detail-close" onclick="closeDetail()" aria-label="Close">
+              <i class="ti ti-x"></i>
+            </button>
+          </div>
+          <div class="detail-body" id="d-body"></div>
+        </div>
+
+      </div><!-- /framework-canvas -->
+    </div>
+
+    <footer>
+      <div class="footer-name">Jens R. Voigt</div>
+      <div class="footer-copy">&copy; 2026 &middot; Berlin, Germany &middot; All rights reserved</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ═══ RESEARCH ═══ -->
 <div id="tab-research" class="tab-panel">
   <div class="page-wrap">
     <div class="section-wrap">
@@ -485,7 +686,7 @@
             <div class="pub-meta">Independent Research &mdash; 71 pages &middot; BPO economics, AI disruption, value-based pricing, business model transformation</div>
           </div>
           <div class="pub-actions">
-            <a href="papers/BPO_Commoditization_Trap_Jens_Voigt_2026.pdf" class="pub-btn" download="BPO_Commoditization_Trap_Jens_Voigt_2026.pdf">
+            <a href="papers/BPO_Commoditization_Trap_Jens_Voigt_2026.pdf" class="pub-btn" download>
               <i class="ti ti-download" aria-hidden="true"></i> Download
             </a>
           </div>
@@ -498,7 +699,7 @@
             <div class="pub-meta">Independent Research &mdash; Value Operating Model, outcome-based outsourcing, customer-centric partnerships</div>
           </div>
           <div class="pub-actions">
-            <a href="papers/The Value Operating Model Jens Voigt.pdf" class="pub-btn" download="The Value Operating Model Jens Voigt.pdf">
+            <a href="papers/The Value Operating Model Jens Voigt.pdf" class="pub-btn" download>
               <i class="ti ti-download" aria-hidden="true"></i> Download
             </a>
           </div>
@@ -511,7 +712,7 @@
             <div class="pub-meta">Independent Research &mdash; CLV–RQ framework, customer operations, enterprise value creation</div>
           </div>
           <div class="pub-actions">
-            <a href="papers/CLV_RQ_Jens_Voigt_2025.pdf" class="pub-btn" download="CLV_RQ_Jens_Voigt_2025.pdf">
+            <a href="papers/CLV_RQ_Jens_Voigt_2025.pdf" class="pub-btn" download>
               <i class="ti ti-download" aria-hidden="true"></i> Download
             </a>
           </div>
@@ -524,7 +725,20 @@
             <div class="pub-meta">Independent Research &mdash; 14 pages &middot; CLV &amp; RQ segmentation, sourcing strategy, cost-to-serve analytics, channel design</div>
           </div>
           <div class="pub-actions">
-            <a href="papers/Service_Design_and_Sourcing_Decisions_Jens_Voigt_2025.pdf" class="pub-btn" download="Service_Design_and_Sourcing_Decisions_Jens_Voigt_2025.pdf">
+            <a href="papers/Service_Design_and_Sourcing_Decisions_Jens_Voigt_2025.pdf" class="pub-btn" download>
+              <i class="ti ti-download" aria-hidden="true"></i> Download
+            </a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div>
+            <div class="pub-type">White Paper &middot; 2025</div>
+            <div class="pub-title">Proving the Value: A CLV + RQ Framework for Value Attribution in Customer Operations Outsourcing</div>
+            <div class="pub-meta">Independent Research &mdash; Value attribution, measurement infrastructure, three-tier scorecard, gainshare commercials</div>
+          </div>
+          <div class="pub-actions">
+            <a href="papers/Value_Attribution_White_Paper_Jens_Voigt_2025.pdf" class="pub-btn" download>
               <i class="ti ti-download" aria-hidden="true"></i> Download
             </a>
           </div>
@@ -540,9 +754,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     ABOUT TAB
-════════════════════════════════════════ -->
+<!-- ═══ ABOUT ═══ -->
 <div id="tab-about" class="tab-panel">
   <div class="page-wrap">
     <div class="section-wrap">
@@ -550,32 +762,10 @@
       <div class="about-grid">
 
         <div class="about-text">
-          <p>
-            I am a BPO and customer operations leader operating at the intersection of
-            strategy, commercial design, and industry thought leadership. Based in Berlin,
-            I currently serve as Director of Strategic Partnerships and Solutions at eBay,
-            where I lead the global outsourcing organisation across a substantial global partner portfolio.
-          </p>
-          <p>
-            Over the past several years I have developed and published frameworks on
-            Customer Lifetime Value (CLV), Relationship Quality (RQ), and value-based
-            outsourcing models — contributing to the evolving discourse on how customer
-            operations create measurable enterprise value. My research examines the
-            structural forces reshaping the BPO industry, particularly the mismatch between
-            how value is created and how it is commercially captured.
-          </p>
-          <p>
-            My work draws on more than two decades of senior operational and commercial
-            leadership across eBay, Yahoo!, and Lexmark, spanning strategy, outsourcing
-            design, contract negotiation, and global partner governance across EMEA, APAC,
-            and North America.
-          </p>
-          <p>
-            I write regularly on
-            <a href="https://jensrvoigt.substack.com/" target="_blank" rel="noopener">Substack</a>
-            about outsourcing economics, AI strategy, and customer value frameworks,
-            and engage with senior leaders across the global BPO and CX industry.
-          </p>
+          <p>I am a BPO and customer operations leader operating at the intersection of strategy, commercial design, and industry thought leadership. Based in Berlin, I currently serve as Director of Strategic Partnerships and Solutions at eBay, where I lead the global outsourcing organisation across a substantial global partner portfolio.</p>
+          <p>Over the past several years I have developed and published frameworks on Customer Lifetime Value (CLV), Relationship Quality (RQ), and value-based outsourcing models — contributing to the evolving discourse on how customer operations create measurable enterprise value. My research examines the structural forces reshaping the BPO industry, particularly the mismatch between how value is created and how it is commercially captured.</p>
+          <p>My work draws on more than two decades of senior operational and commercial leadership across eBay, Yahoo!, and Lexmark, spanning strategy, outsourcing design, contract negotiation, and global partner governance across EMEA, APAC, and North America.</p>
+          <p>I write regularly on <a href="https://jensrvoigt.substack.com/" target="_blank" rel="noopener">Substack</a> about outsourcing economics, AI strategy, and customer value frameworks, and engage with senior leaders across the global BPO and CX industry.</p>
 
           <div class="achievements">
             <div class="achievements-title">Selected Achievements</div>
@@ -600,7 +790,6 @@
           </div>
         </div>
 
-        <!-- CV sidebar -->
         <div>
           <div class="cv-block">
             <div class="cv-item">
@@ -625,7 +814,7 @@
             </div>
             <div class="cv-item">
               <div class="cv-year">2012 – 2018</div>
-              <div class="cv-role">Head of Partner Management (DE → EU/NA → Global)</div>
+              <div class="cv-role">Head of Partner Management (DE &rarr; EU/NA &rarr; Global)</div>
               <div class="cv-org">eBay &middot; Berlin, Germany</div>
             </div>
             <div class="cv-item">
@@ -635,12 +824,12 @@
             </div>
             <div class="cv-item">
               <div class="cv-year">2001 – 2009</div>
-              <div class="cv-role">Technical Support → Process Design → Professional Services Partner Manager EMEA</div>
+              <div class="cv-role">Technical Support &rarr; Process Design &rarr; Professional Services Partner Manager EMEA</div>
               <div class="cv-org">Lexmark ISSC &middot; Dublin, Ireland</div>
             </div>
           </div>
 
-          <div class="cv-block cv-block + cv-block" style="margin-top:10px;">
+          <div class="cv-block" style="margin-top:10px;">
             <div class="cv-item">
               <div class="cv-year">2009 – 2010</div>
               <div class="cv-role">MSc in Finance — Second Class Honors (First Division)</div>
@@ -669,43 +858,25 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     MEDIA TAB
-════════════════════════════════════════ -->
+<!-- ═══ MEDIA ═══ -->
 <div id="tab-media" class="tab-panel">
   <div class="page-wrap">
     <div class="section-wrap">
       <div class="section-label">Podcasts &amp; Media</div>
       <div class="media-list">
 
-        <!-- ══════════════════════════════════════════════
-             HOW TO ADD A NEW PODCAST OR VIDEO:
-             Copy one of the blocks below, paste it after
-             the last one, and update:
-               - href        → the actual URL
-               - media-type  → "Podcast · 2026" or "Video · 2026"
-               - media-title → the episode or talk title
-               - media-meta  → show/channel name + brief description
-             For a podcast use: class="media-icon-wrap"  + ti-microphone
-             For a video use:   class="media-icon-wrap video" + ti-video
-        ══════════════════════════════════════════════ -->
-
         <a href="https://www.youtube.com/watch?v=G7QkLOM4Ln8" target="_blank" rel="noopener" class="media-item">
-          <div class="media-icon-wrap video">
-            <i class="ti ti-video" aria-hidden="true"></i>
-          </div>
+          <div class="media-icon-wrap video"><i class="ti ti-video" aria-hidden="true"></i></div>
           <div class="media-body">
             <div class="media-type">Video &middot; 2025</div>
-            <div class="media-title">Poland&#39;s Global Moment: How America Sees the Future of Outsourcing</div>
+            <div class="media-title">Poland's Global Moment: How America Sees the Future of Outsourcing</div>
             <div class="media-meta">YouTube &mdash; Panel discussion on global outsourcing trends and the role of Poland in the evolving BPO landscape</div>
           </div>
           <div class="media-arrow"><i class="ti ti-arrow-up-right" aria-hidden="true"></i></div>
         </a>
 
         <a href="https://www.linkedin.com/video/live/urn:li:ugcPost:7452733156828303360/" target="_blank" rel="noopener" class="media-item">
-          <div class="media-icon-wrap">
-            <i class="ti ti-microphone" aria-hidden="true"></i>
-          </div>
+          <div class="media-icon-wrap"><i class="ti ti-microphone" aria-hidden="true"></i></div>
           <div class="media-body">
             <div class="media-type">Podcast &middot; 2025</div>
             <div class="media-title">Jens Voigt and Ricky Allen on BPO</div>
@@ -715,9 +886,7 @@
         </a>
 
         <a href="https://youtu.be/M0VPGytrGvw?si=Q5gyejxM9v2uziYz" target="_blank" rel="noopener" class="media-item">
-          <div class="media-icon-wrap video">
-            <i class="ti ti-video" aria-hidden="true"></i>
-          </div>
+          <div class="media-icon-wrap video"><i class="ti ti-video" aria-hidden="true"></i></div>
           <div class="media-body">
             <div class="media-type">Video &middot; 2026</div>
             <div class="media-title">Architecting the Value Driven BPO Industry</div>
@@ -736,9 +905,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     CONTACT TAB
-════════════════════════════════════════ -->
+<!-- ═══ CONTACT ═══ -->
 <div id="tab-contact" class="tab-panel">
   <div class="page-wrap">
     <div class="section-wrap">
@@ -773,32 +940,145 @@
   </div>
 </div>
 
-<!-- ═══ JAVASCRIPT ═══ -->
+<!-- JAVASCRIPT -->
 <script>
+  /* Tab system */
   function showTab(name) {
-    // Hide all panels
-    document.querySelectorAll('.tab-panel').forEach(function(p) {
-      p.classList.remove('active');
-    });
-    // Deactivate all nav links
-    document.querySelectorAll('.nav-tabs a').forEach(function(a) {
-      a.classList.remove('active');
-    });
-    // Show selected panel
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.nav-tabs a').forEach(function(a) { a.classList.remove('active'); });
     document.getElementById('tab-' + name).classList.add('active');
-    // Activate matching nav link
     var link = document.querySelector('.nav-tabs a[data-tab="' + name + '"]');
     if (link) link.classList.add('active');
-    // Close mobile menu
     document.querySelector('.nav-tabs').classList.remove('open');
-    // Scroll to top
     window.scrollTo(0, 0);
   }
 
-  // Mobile hamburger toggle
   document.querySelector('.nav-toggle').addEventListener('click', function() {
     document.querySelector('.nav-tabs').classList.toggle('open');
   });
+
+  /* Node content data */
+  var nodes = {
+
+    engine: {
+      tag: 'The unified theory',
+      title: 'The Customer Value System',
+      body: '<p class="detail-q">"What is the system and why does it compound?"</p>' +
+        '<p>Every interaction is a value event. The system converts those events into measurable economic outcomes — and then reinvests those outcomes to produce better interactions. This is not a linear process. It is a closed loop that compounds upward when managed well, and erodes downward when neglected.</p>' +
+        '<p>The FTE-based outsourcing model has no such loop. Value extracted disappears. This system is the structural alternative — one where the provider participates in the value created, not just the labour deployed.</p>' +
+        '<div class="detail-grid">' +
+          '<div class="detail-cell"><div class="detail-cell-title">The broken alternative</div><div class="detail-cell-body">FTE pricing ties revenue to labour inputs. Productivity improvements reduce revenue. Value created and value captured are determined by fundamentally different variables — there is no mechanism that aligns them.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">The thesis</div><div class="detail-cell-body">Strong RQ → rising CLV → proven attribution → smarter allocation → systematic operations → captured commercial value → reinvestment → stronger RQ.</div></div>' +
+        '</div>'
+    },
+
+    interactions: {
+      tag: 'Layer 1 — Value generation',
+      title: 'Customer interactions',
+      body: '<p class="detail-q">"Where does value begin?"</p>' +
+        '<p>Every customer contact is a value event — an opportunity to strengthen or erode the relationship. Voice calls, chat sessions, email exchanges, AI-assisted resolutions, and self-service completions all sit at the same point in the system: the moment where the customer\'s experience of the brand is shaped.</p>' +
+        '<p>Traditional outsourcing treats these interactions as cost units to be minimised. The value system treats them as the raw material of relationship quality — and therefore of long-term financial value.</p>' +
+        '<div class="detail-pills"><span class="detail-pill">Voice</span><span class="detail-pill">Chat</span><span class="detail-pill">Email</span><span class="detail-pill">Agentic AI</span><span class="detail-pill">Self-service</span><span class="detail-pill">Human support</span></div>' +
+        '<div class="detail-grid">' +
+          '<div class="detail-cell"><div class="detail-cell-title">Old mental model</div><div class="detail-cell-body">Interactions are costs. Minimise handle time, reduce headcount, contain spend. Success = efficiency metrics.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">New mental model</div><div class="detail-cell-body">Interactions are value events. Each one moves the customer\'s relationship quality — and therefore their financial trajectory — up or down.</div></div>' +
+        '</div>'
+    },
+
+    rq: {
+      tag: 'Layer 2 — Value signal',
+      title: 'Relationship quality (RQ)',
+      body: '<p class="detail-q">"Did we strengthen the relationship?"</p>' +
+        '<p>Relationship Quality is the causal mechanism in the system. Built on three empirically validated dimensions — Trust, Commitment, and Satisfaction/Ease — it predicts how a customer will behave financially over time. RQ is not a satisfaction score. It is a leading indicator of retention, spend, and advocacy.</p>' +
+        '<p>Critically, RQ can be measured at the interaction level through sentiment analysis, Customer Effort Scores, and behavioural signals — making it operationally actionable in near real-time, not just analytically interesting months later.</p>' +
+        '<div class="detail-pills"><span class="detail-pill">Trust</span><span class="detail-pill">Commitment</span><span class="detail-pill">Satisfaction / ease</span></div>' +
+        '<div class="detail-grid">' +
+          '<div class="detail-cell"><div class="detail-cell-title">Why not CSAT or NPS?</div><div class="detail-cell-body">These measure a single interaction moment. RQ measures the relational trajectory. Gartner found 70%+ of firms with rising NPS still experienced churn within 18 months.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">What RQ predicts</div><div class="detail-cell-body">Future retention probability, upsell likelihood, cost-to-serve efficiency, and CLV trajectory. Strong-RQ customers escalate less, self-serve more, and are cheaper to serve.</div></div>' +
+        '</div>' +
+        '<div class="detail-links"><a href="papers/CLV_RQ_Jens_Voigt_2025.pdf" class="detail-link" download><i class="ti ti-download"></i> CLV + RQ white paper</a></div>'
+    },
+
+    clv: {
+      tag: 'Layer 3 — Value outcome',
+      title: 'Customer lifetime value (CLV)',
+      body: '<p class="detail-q">"Did we create economic value?"</p>' +
+        '<p>Customer Lifetime Value is the destination metric — the present value of all future cash flows from a customer relationship. CLV is a trajectory, not a snapshot. A service interaction does not produce a transaction directly. It influences a relationship, which influences the customer\'s financial behaviour over months and years.</p>' +
+        '<p>The financial stakes are large: the top 1% of e-commerce customers are worth up to 18× the average. A 5% improvement in retention can increase profitability by 25–95%. This is what customer operations actually touch — and what they are almost never paid for.</p>' +
+        '<div class="detail-pills"><span class="detail-pill">Retention</span><span class="detail-pill">Revenue per customer</span><span class="detail-pill">Advocacy</span><span class="detail-pill">Net revenue retention</span><span class="detail-pill">Cost to serve</span></div>' +
+        '<div class="detail-grid">' +
+          '<div class="detail-cell"><div class="detail-cell-title">The formula</div><div class="detail-cell-body">CLV = (Average order value × Purchase frequency × Customer lifespan) − Cost to acquire and serve. A time series, not a point in time.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">The pricing gap</div><div class="detail-cell-body">Provider revenue is a function of labour inputs. Client value is a function of CLV outcomes. No mechanism in the FTE model connects the two — this is the structural problem the system solves.</div></div>' +
+        '</div>' +
+        '<div class="detail-links"><a href="papers/CLV_RQ_Jens_Voigt_2025.pdf" class="detail-link" download><i class="ti ti-download"></i> CLV + RQ white paper</a></div>'
+    },
+
+    attribution: {
+      tag: 'Layer 4 — Value proof',
+      title: 'Value attribution',
+      body: '<p class="detail-q">"Can we prove the value exists — and price from it?"</p>' +
+        '<p>Attribution solves the hardest problem in the system: connecting what happens in a customer service interaction to what happens to the customer\'s financial value months later. Without this, outcome-based contracts remain commercially indefensible.</p>' +
+        '<p>The framework resolves three failure points simultaneously: data linkage across silos, the causal pathway from interaction to financial outcome, and the need for leading indicators that are operationally useful within hours — not months.</p>' +
+        '<div class="detail-grid">' +
+          '<div class="detail-cell"><div class="detail-cell-title">As measurement tool</div><div class="detail-cell-body">Interaction-outcome data linkage → RQ index construction → RQ-to-CLV conversion rates → three-tier scorecard connecting agent behaviour to financial outcomes.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">As commercial enabler</div><div class="detail-cell-body">An auditable attribution methodology makes gainshare, outcome bonuses, and CLV participation contractually defensible. Attribution is the commercial mechanism.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">Three-tier scorecard</div><div class="detail-cell-body">Tier 1: operational (per-interaction RQ signals). Tier 2: tactical (weekly relationship health). Tier 3: strategic (monthly CLV and financial outcomes).</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">Maturity model</div><div class="detail-cell-body">Four stages from Disconnected (FTE pricing, no attribution) to Integrated (full CLV participation, gainshare governed by validated methodology).</div></div>' +
+        '</div>' +
+        '<div class="detail-links"><a href="papers/Value_Attribution_White_Paper_Jens_Voigt_2025.pdf" class="detail-link" download><i class="ti ti-download"></i> Value attribution white paper</a></div>'
+    },
+
+    sourcing: {
+      tag: 'Layer 5 — Value allocation',
+      title: 'Smart sourcing',
+      body: '<p class="detail-q">"Where should we invest service effort?"</p>' +
+        '<p>CLV and RQ scores drive segmentation across four tiers — Platinum, Gold, Iron, and Lead — each with a distinct optimal sourcing model, service design, and channel strategy. The principle is simple: the cost of service should be a direct function of the value of the customer.</p>' +
+        '<p>The key insight is that two customers with identical CLV can have very different net profitability depending on their RQ. High-RQ customers are cheaper to serve — they escalate less and self-serve more. RQ is not only a loyalty predictor; it is a cost efficiency signal.</p>' +
+        '<div class="detail-grid">' +
+          '<div class="detail-cell"><div class="detail-cell-title">Platinum</div><div class="detail-cell-body">In-house or onshore. White-glove, proactive service. Voice and social as primary channels. Strategy: Deepen and Expand.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">Gold</div><div class="detail-cell-body">Onshore or nearshore. Dedicated, empathetic handling. Voice, chat, and email. Strategy: Strengthen Ties.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">Iron</div><div class="detail-cell-body">Nearshore or offshore with agentic AI support. Chat and self-service. Efficiency-focused. Strategy: Nurture and Manage.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">Lead</div><div class="detail-cell-body">Self-service portals and automated bots as primary interface. Human contact only where unavoidable. Strategy: Contain Cost or Exit/Divest.</div></div>' +
+        '</div>' +
+        '<div class="detail-links"><a href="papers/Service_Design_and_Sourcing_Decisions_Jens_Voigt_2025.pdf" class="detail-link" download><i class="ti ti-download"></i> Smart sourcing paper</a></div>'
+    },
+
+    vom: {
+      tag: 'Layer 6 — Value operations & capture',
+      title: 'Value Operating Model',
+      body: '<p class="detail-q">"How do we systematically create and capture value at scale?"</p>' +
+        '<p>The Value Operating Model (VOM) is the operational architecture that runs the system. It evolves outsourcing from an input-based labour contract to a mutual value-creation ecosystem built on four interdependent pillars. It is where governance, performance management, commercial design, and technology converge.</p>' +
+        '<p>Commercial capture sits within this layer: revenue shifts from FTE billing to a stack of platform fees, gainsharing, orchestration contracts, and transformation fees. The J-curve transition roadmap describes the phased financial path from legacy to value-based models over 24–48 months.</p>' +
+        '<div class="detail-grid">' +
+          '<div class="detail-cell"><div class="detail-cell-title">Governance</div><div class="detail-cell-body">CLV/RQ dashboards. Quarterly value reviews. Shared data infrastructure. Transparent attribution methodology. Partners accountable for outcomes, not compliance.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">Performance</div><div class="detail-cell-body">Partners empowered on "how". Accountable for CLV uplift, RQ improvement, and NRR growth — not SLA adherence and average handling time.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">Commercials</div><div class="detail-cell-body">Platform fees + resolved-case pricing + retention gainshare + transformation fees. J-curve: short-term margin compression, long-term value participation.</div></div>' +
+          '<div class="detail-cell"><div class="detail-cell-title">Technology</div><div class="detail-cell-body">CDP for CLV/RQ visibility. AI quality and sentiment scoring. Intelligent routing. Predictive WFM. Value dashboards. AI coaching for agent behaviour.</div></div>' +
+        '</div>' +
+        '<div class="detail-links">' +
+          '<a href="papers/The Value Operating Model Jens Voigt.pdf" class="detail-link" download><i class="ti ti-download"></i> Value Operating Model</a>' +
+          '<a href="papers/BPO_Commoditization_Trap_Jens_Voigt_2026.pdf" class="detail-link" download><i class="ti ti-download"></i> Commoditization Trap paper</a>' +
+        '</div>'
+    }
+
+  };
+
+  function selectNode(key) {
+    var d = nodes[key];
+    if (!d) return;
+    document.getElementById('d-tag').textContent = d.tag;
+    document.getElementById('d-title').textContent = d.title;
+    document.getElementById('d-body').innerHTML = d.body;
+    var panel = document.getElementById('detail-panel');
+    panel.classList.add('visible');
+    setTimeout(function() {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 60);
+  }
+
+  function closeDetail() {
+    document.getElementById('detail-panel').classList.remove('visible');
+  }
 </script>
 
 </body>
