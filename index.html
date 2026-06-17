@@ -150,11 +150,11 @@
     .home-nav-card:hover .home-nav-arrow { color: #8B7355; }
 
     .hero-portrait {
-      aspect-ratio: 2/3; border-radius: 4px; overflow: hidden;
+      border-radius: 4px; overflow: hidden;
       border: 1px solid #D0C8BC; background: #DDD9D0;
     }
 
-    .hero-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+    .hero-portrait img { width: 100%; height: auto; display: block; }
 
     /* SECTION HEADER */
     .section-wrap { padding: 3.5rem 0; }
@@ -201,6 +201,24 @@
     }
     .pub-btn:hover { background: #EDE8DF; border-color: #B0A898; color: #333; }
     .pub-btn i { font-size: 14px; }
+
+    /* NEWSLETTER / SUBSTACK FEED */
+    .newsletter-intro {
+      font-size: 13.5px; color: #777; font-weight: 300;
+      margin: -1rem 0 1.5rem; max-width: 640px;
+    }
+    .newsletter-intro a { color: #8B7355; text-decoration: underline; }
+
+    a.substack-item { text-decoration: none; cursor: pointer; }
+    a.substack-item .pub-btn { pointer-events: none; }
+
+    .substack-loading {
+      font-family: 'DM Mono', monospace; font-size: 12.5px; letter-spacing: 0.02em;
+      color: #999; padding: 1.4rem 1.5rem; border: 1px dashed #D8D3C8; border-radius: 3px;
+    }
+    .substack-loading a { color: #8B7355; text-decoration: underline; }
+
+    .newsletter-cta { margin-top: 1rem; display: flex; justify-content: flex-end; }
 
     /* ABOUT */
     .about-grid { display: grid; grid-template-columns: 1fr 300px; gap: 3.5rem; align-items: start; }
@@ -420,7 +438,7 @@
       .page-wrap { padding: 0 1.5rem; }
       .home-hero { grid-template-columns: 1fr; padding: 3rem 0 2rem; gap: 2rem; }
       .home-hero h1 { font-size: 34px; }
-      .hero-portrait { aspect-ratio: 1; max-width: 160px; }
+      .hero-portrait { max-width: 160px; }
       .home-nav-grid { grid-template-columns: repeat(2, 1fr); }
       .about-grid { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: repeat(2, 1fr); }
@@ -580,7 +598,7 @@
           <circle cx="310" cy="330" r="220" fill="none" stroke="#E0DBD2" stroke-width="0.75" stroke-dasharray="3 7"/>
 
           <!-- trap label — flat, centered, above diagram -->
-          <text font-family="'DM Mono', monospace" font-size="8.5" letter-spacing="0.1em" fill="#6B5A3E" text-anchor="middle" x="310" y="30">THE COMMODITIZATION TRAP — the broken model this system replaces</text>
+          <text font-family="'DM Mono', monospace" font-size="8.5" letter-spacing="0.1em" fill="#6B5A3E" text-anchor="middle" x="310" y="30">UNIFIED THEORY OF VALUE GENERATION</text>
           <line x1="80" y1="36" x2="540" y2="36" stroke="#C8B89A" stroke-width="0.5" stroke-dasharray="4 4"/>
 
           <!-- spoke lines: node inner-edge → core circle edge (r=72) -->
@@ -767,6 +785,21 @@
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <div class="section-wrap">
+      <div class="section-label">From the Newsletter</div>
+      <p class="newsletter-intro">Shorter, more frequent essays on outsourcing economics, AI strategy, and customer value frameworks — published on <a href="https://jensrvoigt.substack.com/" target="_blank" rel="noopener">Jens on BPO</a>.</p>
+
+      <div class="publications-list" id="substack-feed">
+        <div class="substack-loading">Loading latest essays&hellip;</div>
+      </div>
+
+      <div class="newsletter-cta">
+        <a href="https://jensrvoigt.substack.com/" target="_blank" rel="noopener" class="pub-btn">
+          <i class="ti ti-mail" aria-hidden="true"></i> View all on Substack
+        </a>
       </div>
     </div>
 
@@ -979,6 +1012,50 @@
   document.querySelector('.nav-toggle').addEventListener('click', function() {
     document.querySelector('.nav-tabs').classList.toggle('open');
   });
+
+  /* Substack newsletter feed (client-side RSS fetch, no backend needed) */
+  function escapeHtml(str) {
+    var d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  function loadSubstackFeed() {
+    var container = document.getElementById('substack-feed');
+    if (!container) return;
+
+    var feedUrl = 'https://jensrvoigt.substack.com/feed';
+    var apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl);
+
+    fetch(apiUrl)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (!data.items || !data.items.length) throw new Error('empty feed');
+
+        var html = data.items.slice(0, 5).map(function(item) {
+          var d = new Date(item.pubDate);
+          var dateStr = isNaN(d) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          var raw = (item.description || item.content || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+          if (raw.length > 170) raw = raw.slice(0, 170).trim() + '\u2026';
+
+          return '<a class="pub-item substack-item" href="' + item.link + '" target="_blank" rel="noopener">' +
+                   '<div>' +
+                     '<div class="pub-type">Newsletter' + (dateStr ? ' &middot; ' + dateStr : '') + '</div>' +
+                     '<div class="pub-title">' + escapeHtml(item.title) + '</div>' +
+                     '<div class="pub-meta">' + escapeHtml(raw) + '</div>' +
+                   '</div>' +
+                   '<div class="pub-actions"><span class="pub-btn"><i class="ti ti-arrow-up-right" aria-hidden="true"></i> Read</span></div>' +
+                 '</a>';
+        }).join('');
+
+        container.innerHTML = html;
+      })
+      .catch(function() {
+        container.innerHTML = '<div class="substack-loading">Couldn\u2019t load the latest essays automatically right now &mdash; <a href="https://jensrvoigt.substack.com/" target="_blank" rel="noopener">read them directly on Substack</a>.</div>';
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSubstackFeed);
 
   /* Node content data */
   var nodes = {
