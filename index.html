@@ -1020,28 +1020,61 @@
     return d.innerHTML;
   }
 
+  /* Try a list of public CORS proxies in order until one returns the raw feed XML */
+  function fetchFeedXml(feedUrl) {
+    var proxies = [
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(feedUrl),
+      'https://corsproxy.io/?url=' + encodeURIComponent(feedUrl),
+      'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(feedUrl)
+    ];
+
+    function tryProxy(i) {
+      if (i >= proxies.length) return Promise.reject(new Error('all proxies failed'));
+      return fetch(proxies[i])
+        .then(function(res) {
+          if (!res.ok) throw new Error('bad status');
+          return res.text();
+        })
+        .then(function(text) {
+          if (!text || text.indexOf('<item') === -1) throw new Error('not a feed');
+          return text;
+        })
+        .catch(function() { return tryProxy(i + 1); });
+    }
+
+    return tryProxy(0);
+  }
+
   function loadSubstackFeed() {
     var container = document.getElementById('substack-feed');
     if (!container) return;
 
     var feedUrl = 'https://jensrvoigt.substack.com/feed';
-    var apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl);
 
-    fetch(apiUrl)
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (!data.items || !data.items.length) throw new Error('empty feed');
+    fetchFeedXml(feedUrl)
+      .then(function(xmlText) {
+        var xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+        var items = Array.prototype.slice.call(xml.querySelectorAll('item')).slice(0, 5);
+        if (!items.length) throw new Error('empty feed');
 
-        var html = data.items.slice(0, 5).map(function(item) {
-          var d = new Date(item.pubDate);
-          var dateStr = isNaN(d) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-          var raw = (item.description || item.content || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+        var html = items.map(function(item) {
+          var titleEl = item.querySelector('title');
+          var linkEl = item.querySelector('link');
+          var dateEl = item.querySelector('pubDate');
+          var descEl = item.querySelector('description');
+
+          var title = titleEl ? titleEl.textContent : 'Untitled';
+          var link = linkEl ? linkEl.textContent.trim() : feedUrl;
+          var d = dateEl ? new Date(dateEl.textContent) : null;
+          var dateStr = (d && !isNaN(d)) ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+          var raw = (descEl ? descEl.textContent : '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
           if (raw.length > 170) raw = raw.slice(0, 170).trim() + '\u2026';
 
-          return '<a class="pub-item substack-item" href="' + item.link + '" target="_blank" rel="noopener">' +
+          return '<a class="pub-item substack-item" href="' + link + '" target="_blank" rel="noopener">' +
                    '<div>' +
                      '<div class="pub-type">Newsletter' + (dateStr ? ' &middot; ' + dateStr : '') + '</div>' +
-                     '<div class="pub-title">' + escapeHtml(item.title) + '</div>' +
+                     '<div class="pub-title">' + escapeHtml(title) + '</div>' +
                      '<div class="pub-meta">' + escapeHtml(raw) + '</div>' +
                    '</div>' +
                    '<div class="pub-actions"><span class="pub-btn"><i class="ti ti-arrow-up-right" aria-hidden="true"></i> Read</span></div>' +
@@ -1056,6 +1089,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', loadSubstackFeed);
+
 
   /* Node content data */
   var nodes = {
