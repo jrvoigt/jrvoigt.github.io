@@ -1007,6 +1007,9 @@
     if (link) link.classList.add('active');
     document.querySelector('.nav-tabs').classList.remove('open');
     window.scrollTo(0, 0);
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: '/' + name, title: name });
+    }
   }
 
   document.querySelector('.nav-toggle').addEventListener('click', function() {
@@ -1214,6 +1217,9 @@
     document.getElementById('detail-panel').classList.remove('visible');
   }
 </script>
+
+<script data-goatcounter="https://jrvoigt.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 
 </body>
 </html>
