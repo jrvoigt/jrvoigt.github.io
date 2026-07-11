@@ -1221,5 +1221,33 @@
 <script data-goatcounter="https://jrvoigt.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
+<script>
+  /* Track paper downloads, media plays, and article clicks as GoatCounter events.
+     Delegated listener so it also covers links injected later (Substack feed,
+     research detail panels). Papers use the download attribute and media/articles
+     open in a new tab, so the tracking request is never cut off by navigation. */
+  document.addEventListener('click', function(e) {
+    if (!(window.goatcounter && window.goatcounter.count)) return;
+    var a = e.target.closest ? e.target.closest('a') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+
+    function innerText(sel) {
+      var el = a.querySelector(sel);
+      return (el ? el.textContent : a.textContent).replace(/\s+/g, ' ').trim();
+    }
+
+    if (/\.pdf(\?|#|$)/i.test(href)) {
+      var name = decodeURIComponent(href.split('/').pop())
+        .replace(/\.pdf$/i, '').replace(/_/g, ' ');
+      window.goatcounter.count({ path: 'paper/' + name, title: name, event: true });
+    } else if (a.classList.contains('media-item')) {
+      window.goatcounter.count({ path: 'media/' + innerText('.media-title'), event: true });
+    } else if (a.classList.contains('substack-item')) {
+      window.goatcounter.count({ path: 'article/' + innerText('.pub-title'), event: true });
+    }
+  });
+</script>
+
 </body>
 </html>

@@ -53,9 +53,13 @@ def api_get(path, **params):
 
 
 def get_total(start, end):
-    """Returns (total_visits, busiest_day, busiest_day_count) for the range."""
+    """Returns (total_visits, busiest_day, busiest_day_count) for the range.
+
+    'total' includes event clicks (downloads etc.); subtract them so the
+    headline number is genuine site visits only.
+    """
     data = api_get("/stats/total", start=start.isoformat(), end=end.isoformat())
-    total = data.get("total", 0)
+    total = data.get("total", 0) - data.get("total_events", 0)
     busiest_day, busiest_count = None, 0
     for day_stat in data.get("stats", []):
         day_total = day_stat.get("daily")
@@ -68,8 +72,29 @@ def get_total(start, end):
 
 
 def get_pages(start, end):
-    data = api_get("/stats/hits", start=start.isoformat(), end=end.isoformat(), limit=10)
-    return data.get("hits", [])
+    """Returns (pages, papers, media_articles) — regular pageviews vs. events.
+
+    Events are tracked by the site with prefixed paths: paper/<name> for PDF
+    downloads, media/<title> and article/<title> for outbound clicks.
+    """
+    data = api_get("/stats/hits", start=start.isoformat(), end=end.isoformat(), limit=100)
+    pages, papers, media_articles = [], [], []
+    for h in data.get("hits", []):
+        path = h.get("path", "")
+        if h.get("event"):
+            if path.startswith("paper/"):
+                papers.append((path[len("paper/"):], h.get("count", 0)))
+            elif path.startswith("media/"):
+                media_articles.append(("Media: " + path[len("media/"):], h.get("count", 0)))
+            elif path.startswith("article/"):
+                media_articles.append(("Article: " + path[len("article/"):], h.get("count", 0)))
+            else:
+                media_articles.append((path, h.get("count", 0)))
+        else:
+            pages.append(h)
+    papers.sort(key=lambda x: -x[1])
+    media_articles.sort(key=lambda x: -x[1])
+    return pages[:10], papers[:10], media_articles[:10]
 
 
 def get_breakdown(page, start, end):
@@ -103,13 +128,13 @@ def rows_html(items):
     return "".join(out)
 
 
-def section(title, header, rows):
+def section(title, header, rows, count_label="Visits"):
     return f"""
     <h3 style="font-family:Georgia,serif;margin:24px 0 8px">{title}</h3>
     <table style="border-collapse:collapse;width:100%;font-size:14px">
       <tr>
         <th style="text-align:left;padding:6px 10px;background:#f0ece4">{header}</th>
-        <th style="text-align:right;padding:6px 10px;background:#f0ece4">Visits</th>
+        <th style="text-align:right;padding:6px 10px;background:#f0ece4">{count_label}</th>
       </tr>
       {rows}
     </table>"""
@@ -134,7 +159,7 @@ def main():
     total, busiest_day, busiest_count = get_total(week_start, week_end)
     prev_total, _, _ = get_total(prev_start, prev_end)
 
-    pages = get_pages(week_start, week_end)
+    pages, papers, media_articles = get_pages(week_start, week_end)
     refs = get_breakdown("toprefs", week_start, week_end)
     browsers = get_breakdown("browsers", week_start, week_end)
     locations = get_breakdown("locations", week_start, week_end)
@@ -144,6 +169,8 @@ def main():
     page_rows = rows_html([
         (TAB_NAMES.get(p.get("path", ""), p.get("path", "")), p.get("count", 0))
         for p in pages])
+    paper_rows = rows_html(papers)
+    media_rows = rows_html(media_articles)
     ref_rows = rows_html([
         (r.get("name") or "Direct / unknown", r.get("count", 0)) for r in refs])
     browser_rows = rows_html([
@@ -176,6 +203,8 @@ def main():
     </table>
 
     {section("Most-viewed sections", "Section", page_rows)}
+    {section("Paper downloads", "Paper", paper_rows, "Downloads")}
+    {section("Articles &amp; media clicked", "Item", media_rows, "Clicks")}
     {section("Where visitors came from", "Source", ref_rows)}
     {section("Visitor locations", "Country", location_rows)}
     {section("Browsers", "Browser", browser_rows)}
@@ -186,13 +215,15 @@ def main():
   </div>
 </div>"""
 
+    downloads = sum(count for _, count in papers)
     plain_period = f"{week_start.strftime('%d %b')} - {week_end.strftime('%d %b %Y')}"
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Website report: {total} visits ({plain_period})"
+    msg["Subject"] = f"Website report: {total} visits, {downloads} paper downloads ({plain_period})"
     msg["From"] = os.environ["GMAIL_USER"]
     msg["To"] = os.environ["REPORT_TO"]
     msg.attach(MIMEText(
-        f"Weekly report {plain_period}: {total} visits (previous week: {prev_total}).", "plain"))
+        f"Weekly report {plain_period}: {total} visits, {downloads} paper downloads "
+        f"(previous week: {prev_total} visits).", "plain"))
     msg.attach(MIMEText(html, "html"))
 
     with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as smtp:
