@@ -15,6 +15,7 @@ import json
 import os
 import smtplib
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -38,18 +39,24 @@ TAB_NAMES = {
 
 
 def api_get(path, **params):
+    """GET with retries — GoatCounter occasionally returns transient errors."""
     qs = urllib.parse.urlencode({k: v for k, v in params.items() if v is not None})
     url = f"{BASE}{path}" + (f"?{qs}" if qs else "")
     req = urllib.request.Request(url, headers={
         "Authorization": f"Bearer {TOKEN}",
         "Content-Type": "application/json",
     })
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return json.load(resp)
-    except urllib.error.HTTPError as e:
-        print(f"GoatCounter API error {e.code} for {url}: {e.read().decode(errors='replace')}", file=sys.stderr)
-        raise
+    attempts = 5
+    for attempt in range(1, attempts + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.load(resp)
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+            detail = e.read().decode(errors="replace") if isinstance(e, urllib.error.HTTPError) else str(e)
+            print(f"GoatCounter API attempt {attempt}/{attempts} failed for {url}: {detail}", file=sys.stderr)
+            if attempt == attempts:
+                raise
+            time.sleep(30 * attempt)  # 30s, 60s, 90s, 120s between tries
 
 
 def get_total(start, end):
