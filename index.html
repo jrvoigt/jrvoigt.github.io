@@ -1023,24 +1023,66 @@
     return d.innerHTML;
   }
 
-  /* Try a list of public CORS proxies in order until one returns the raw feed XML */
-  function fetchFeedXml(feedUrl) {
+  var FEED_URL = 'https://jensrvoigt.substack.com/feed';
+
+  /* A hung host would otherwise block until the browser's own network timeout,
+     which is tens of seconds \u2014 long enough that visitors give up first. */
+  function fetchWithTimeout(url, ms) {
+    var ctrl = new AbortController();
+    var timer = setTimeout(function() { ctrl.abort(); }, ms);
+    return fetch(url, { signal: ctrl.signal })
+      .then(function(res) {
+        clearTimeout(timer);
+        if (!res.ok) throw new Error('bad status');
+        return res;
+      })
+      .catch(function(err) { clearTimeout(timer); throw err; });
+  }
+
+  /* Preferred source: the snapshot committed by the Update Substack feed
+     workflow. Same origin, so it needs no proxy and arrives immediately. */
+  function fetchFeedSnapshot() {
+    return fetchWithTimeout('substack.json', 4000)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        var items = data && data.items;
+        if (!items || !items.length) throw new Error('empty snapshot');
+        return items;
+      });
+  }
+
+  /* Backstop for a missing snapshot: public CORS proxies, tried in order.
+     Substack sends no cross-origin headers, so the feed cannot be read directly.
+     These are free services that go down without warning \u2014 hence the timeout. */
+  function fetchFeedViaProxy() {
     var proxies = [
-      'https://api.allorigins.win/raw?url=' + encodeURIComponent(feedUrl),
-      'https://corsproxy.io/?url=' + encodeURIComponent(feedUrl),
-      'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(feedUrl)
+      'https://corsproxy.io/?url=' + encodeURIComponent(FEED_URL),
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(FEED_URL),
+      'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(FEED_URL)
     ];
 
     function tryProxy(i) {
       if (i >= proxies.length) return Promise.reject(new Error('all proxies failed'));
-      return fetch(proxies[i])
-        .then(function(res) {
-          if (!res.ok) throw new Error('bad status');
-          return res.text();
-        })
+      return fetchWithTimeout(proxies[i], 4000)
+        .then(function(res) { return res.text(); })
         .then(function(text) {
           if (!text || text.indexOf('<item') === -1) throw new Error('not a feed');
-          return text;
+          var xml = new DOMParser().parseFromString(text, 'text/xml');
+          var nodes = Array.prototype.slice.call(xml.querySelectorAll('item')).slice(0, 5);
+          if (!nodes.length) throw new Error('empty feed');
+
+          return nodes.map(function(node) {
+            function val(tag) {
+              var el = node.querySelector(tag);
+              return el ? el.textContent : '';
+            }
+            return {
+              title: val('title'),
+              link: val('link').trim(),
+              pubDate: val('pubDate'),
+              summary: val('description').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+            };
+          });
         })
         .catch(function() { return tryProxy(i + 1); });
     }
@@ -1048,44 +1090,32 @@
     return tryProxy(0);
   }
 
+  function renderFeed(container, items) {
+    container.innerHTML = items.slice(0, 5).map(function(item) {
+      var d = item.pubDate ? new Date(item.pubDate) : null;
+      var dateStr = (d && !isNaN(d)) ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+      var summary = item.summary || '';
+      if (summary.length > 170) summary = summary.slice(0, 170).trim() + '\u2026';
+
+      return '<a class="pub-item substack-item" href="' + (item.link || FEED_URL) + '" target="_blank" rel="noopener">' +
+               '<div>' +
+                 '<div class="pub-type">Newsletter' + (dateStr ? ' &middot; ' + dateStr : '') + '</div>' +
+                 '<div class="pub-title">' + escapeHtml(item.title || 'Untitled') + '</div>' +
+                 '<div class="pub-meta">' + escapeHtml(summary) + '</div>' +
+               '</div>' +
+               '<div class="pub-actions"><span class="pub-btn"><i class="ti ti-arrow-up-right" aria-hidden="true"></i> Read</span></div>' +
+             '</a>';
+    }).join('');
+  }
+
   function loadSubstackFeed() {
     var container = document.getElementById('substack-feed');
     if (!container) return;
 
-    var feedUrl = 'https://jensrvoigt.substack.com/feed';
-
-    fetchFeedXml(feedUrl)
-      .then(function(xmlText) {
-        var xml = new DOMParser().parseFromString(xmlText, 'text/xml');
-        var items = Array.prototype.slice.call(xml.querySelectorAll('item')).slice(0, 5);
-        if (!items.length) throw new Error('empty feed');
-
-        var html = items.map(function(item) {
-          var titleEl = item.querySelector('title');
-          var linkEl = item.querySelector('link');
-          var dateEl = item.querySelector('pubDate');
-          var descEl = item.querySelector('description');
-
-          var title = titleEl ? titleEl.textContent : 'Untitled';
-          var link = linkEl ? linkEl.textContent.trim() : feedUrl;
-          var d = dateEl ? new Date(dateEl.textContent) : null;
-          var dateStr = (d && !isNaN(d)) ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
-
-          var raw = (descEl ? descEl.textContent : '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-          if (raw.length > 170) raw = raw.slice(0, 170).trim() + '\u2026';
-
-          return '<a class="pub-item substack-item" href="' + link + '" target="_blank" rel="noopener">' +
-                   '<div>' +
-                     '<div class="pub-type">Newsletter' + (dateStr ? ' &middot; ' + dateStr : '') + '</div>' +
-                     '<div class="pub-title">' + escapeHtml(title) + '</div>' +
-                     '<div class="pub-meta">' + escapeHtml(raw) + '</div>' +
-                   '</div>' +
-                   '<div class="pub-actions"><span class="pub-btn"><i class="ti ti-arrow-up-right" aria-hidden="true"></i> Read</span></div>' +
-                 '</a>';
-        }).join('');
-
-        container.innerHTML = html;
-      })
+    fetchFeedSnapshot()
+      .catch(function() { return fetchFeedViaProxy(); })
+      .then(function(items) { renderFeed(container, items); })
       .catch(function() {
         container.innerHTML = '<div class="substack-loading">Couldn\u2019t load the latest essays automatically right now &mdash; <a href="https://jensrvoigt.substack.com/" target="_blank" rel="noopener">read them directly on Substack</a>.</div>';
       });
