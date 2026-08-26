@@ -1,7 +1,13 @@
 {
   "source": "https://jensrvoigt.substack.com/feed",
-  "fetched": "2026-08-25T16:47:46Z",
+  "fetched": "2026-08-26T06:00:07Z",
   "items": [
+    {
+      "title": "Escaping the Commoditization Trap: How the BPO Industry Can Build a New Business Model in the Age of AI",
+      "link": "https://jensrvoigt.substack.com/p/escaping-the-commoditization-trap",
+      "pubDate": "2026-08-25T17:53:47Z",
+      "summary": "An introduction to my latest white paper on the future of the BPO industry."
+    },
     {
       "title": "The Cheap AI Illusion:",
       "link": "https://jensrvoigt.substack.com/p/the-cheap-ai-illusion",
@@ -25,12 +31,6 @@
       "link": "https://jensrvoigt.substack.com/p/asymmetry-part-iii-value-doesnt-scale",
       "pubDate": "2026-04-12T08:22:47Z",
       "summary": "From structural asymmetry to optimized value allocation"
-    },
-    {
-      "title": "Asymmetry (Part II)",
-      "link": "https://jensrvoigt.substack.com/p/asymmetry-part-ii",
-      "pubDate": "2026-04-03T15:59:23Z",
-      "summary": "Where Price and Value Drift Apart"
     }
   ]
 }
