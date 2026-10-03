@@ -6,14 +6,16 @@ proxies kept going down and stalling the page, so this script fetches the feed
 on a schedule instead and commits the result next to index.html. The page then
 loads its own file from its own domain: no CORS, no proxies, no third parties.
 
-Substack answers GitHub's runner IPs with 403, so a direct fetch is only the
-first of several sources tried here; the rest read the feed through services
-that Substack does answer. Whatever the source, the output is identical.
+Substack blocks datacenter IP ranges, so a direct fetch always returns 403 from
+a GitHub runner and only ever succeeds when this is run from a normal machine.
+The real work is done by the JSON converters that follow it, which read the feed
+from their own servers. Whatever the source, the output here is identical.
 
-Writes substack.json in the repository root. No secrets or environment
-variables needed — the feed is public. If every source fails the script exits
-non-zero and leaves the existing snapshot untouched, so the site keeps showing
-the last good data rather than an empty list.
+Failure policy: a converter having a bad morning is harmless, because the site
+keeps serving the snapshot already committed. So a failed refresh exits 0 with a
+warning rather than failing the build and sending mail. It only exits non-zero
+when there is no usable snapshot at all, or when no source has succeeded for
+STALE_AFTER_DAYS - which means the pipeline is genuinely broken, not just flaky.
 """
 
 import html
@@ -32,7 +34,13 @@ from email.utils import parsedate_to_datetime
 FEED_URL = "https://jensrvoigt.substack.com/feed"
 OUT_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "substack.json")
 MAX_ITEMS = 5
-TIMEOUT = 30
+TIMEOUT = 25
+
+# Refresh "checked" at least this often even when nothing was published, so the
+# field stays a usable freshness signal. Costs about one commit a week.
+TOUCH_AFTER_DAYS = 7
+# No source has worked for this long: treat it as broken and fail the run.
+STALE_AFTER_DAYS = 14
 
 # Substack's bot protection is friendlier to something that looks like a browser
 BROWSER_HEADERS = {
@@ -68,19 +76,34 @@ def iso_date(value):
     value = (value or "").strip()
     if not value:
         return ""
-    for parse in (
-        parsedate_to_datetime,                       # RFC 822: "Wed, 08 Jul 2026 07:19:48 GMT"
-        datetime.fromisoformat,                      # "2026-07-08T07:19:48+00:00"
-        lambda v: datetime.strptime(v, "%Y-%m-%d %H:%M:%S"),  # rss2json's format
-    ):
-        try:
-            dt = parse(value)
-        except (TypeError, ValueError):
-            continue
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
-        return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    # JSON Feed sends "2026-08-25T17:53:47.000Z", which fromisoformat rejects
+    # on older Pythons unless the Z is spelled out as an offset.
+    for raw in (value, value.replace("Z", "+00:00")):
+        for parse in (
+            parsedate_to_datetime,                                  # RFC 822
+            datetime.fromisoformat,                                 # ISO 8601
+            lambda v: datetime.strptime(v, "%Y-%m-%d %H:%M:%S"),    # rss2json
+        ):
+            try:
+                dt = parse(raw)
+            except (TypeError, ValueError):
+                continue
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     return ""
+
+
+def entry(title, link, date, summary):
+    link = (link or "").strip()
+    if not link:
+        return None
+    return {
+        "title": clean(title) or "Untitled",
+        "link": link,
+        "pubDate": iso_date(date),
+        "summary": clean(summary),
+    }
 
 
 def items_from_xml(xml_text):
@@ -94,68 +117,60 @@ def items_from_xml(xml_text):
 
     out = []
     for node in list(root.iterfind("./channel/item"))[:MAX_ITEMS]:
-        link = text_of(node, "link").strip()
-        if not link:
-            continue
-        out.append(
-            {
-                "title": clean(text_of(node, "title")) or "Untitled",
-                "link": link,
-                "pubDate": iso_date(text_of(node, "pubDate")),
-                "summary": clean(text_of(node, "description")),
-            }
+        e = entry(
+            text_of(node, "title"),
+            text_of(node, "link"),
+            text_of(node, "pubDate"),
+            text_of(node, "description"),
         )
-    return out
-
-
-def items_from_rss2json(body):
-    data = json.loads(body)
-    if data.get("status") != "ok":
-        raise ValueError("rss2json reported status=%r" % data.get("status"))
-    out = []
-    for entry in (data.get("items") or [])[:MAX_ITEMS]:
-        link = (entry.get("link") or "").strip()
-        if not link:
-            continue
-        out.append(
-            {
-                "title": clean(entry.get("title")) or "Untitled",
-                "link": link,
-                "pubDate": iso_date(entry.get("pubDate")),
-                "summary": clean(entry.get("description")),
-            }
-        )
+        if e:
+            out.append(e)
     return out
 
 
 def source_direct():
+    """Only ever works off a GitHub runner; kept so local runs skip the converters."""
     return items_from_xml(get(FEED_URL))
 
 
 def source_rss2json():
     url = "https://api.rss2json.com/v1/api.json?rss_url=" + urllib.parse.quote(FEED_URL, safe="")
-    return items_from_rss2json(get(url, {"User-Agent": BROWSER_HEADERS["User-Agent"]}))
+    data = json.loads(get(url))
+    if data.get("status") != "ok":
+        raise ValueError("rss2json reported status=%r" % data.get("status"))
+    out = []
+    for it in (data.get("items") or [])[:MAX_ITEMS]:
+        e = entry(it.get("title"), it.get("link"), it.get("pubDate"), it.get("description"))
+        if e:
+            out.append(e)
+    return out
 
 
-def source_codetabs():
-    url = "https://api.codetabs.com/v1/proxy?quest=" + urllib.parse.quote(FEED_URL, safe="")
-    return items_from_xml(get(url))
-
-
-def source_allorigins():
-    url = "https://api.allorigins.win/raw?url=" + urllib.parse.quote(FEED_URL, safe="")
-    return items_from_xml(get(url))
+def source_feed2json():
+    url = "https://feed2json.org/convert?url=" + urllib.parse.quote(FEED_URL, safe="")
+    data = json.loads(get(url))
+    out = []
+    for it in (data.get("items") or [])[:MAX_ITEMS]:
+        e = entry(
+            it.get("title"),
+            it.get("url"),
+            it.get("date_published"),
+            it.get("summary") or it.get("content_html"),
+        )
+        if e:
+            out.append(e)
+    return out
 
 
 SOURCES = [
     ("substack direct", source_direct),
     ("rss2json", source_rss2json),
-    ("codetabs proxy", source_codetabs),
-    ("allorigins proxy", source_allorigins),
+    ("feed2json", source_feed2json),
 ]
 
 
 def collect():
+    """Return (items, None) on success, or (None, problems) if every source failed."""
     problems = []
     for name, fn in SOURCES:
         for attempt in range(2):
@@ -163,48 +178,93 @@ def collect():
                 items = fn()
                 if not items:
                     raise ValueError("no usable items")
-                print(f"source '{name}' succeeded with {len(items)} items")
-                return items
-            except Exception as exc:  # any source may fail in its own way
-                problems.append(f"{name}: {exc}")
+                print("source '%s' succeeded with %d items" % (name, len(items)))
+                return items, None
+            except Exception as exc:  # each source fails in its own way
+                problems.append("%s: %s" % (name, exc))
                 if attempt == 0:
                     time.sleep(3)
-    raise SystemExit(
-        "every source failed, leaving the existing snapshot untouched:\n  "
-        + "\n  ".join(problems)
-    )
+    return None, problems
 
 
-def existing_items(path):
+def load_existing(path):
     try:
         with open(path, encoding="utf-8") as fh:
-            return json.load(fh).get("items")
-    except (OSError, ValueError):
+            data = json.load(fh)
+        if isinstance(data.get("items"), list) and data["items"]:
+            return data
+    except (OSError, ValueError, AttributeError):
+        pass
+    return None
+
+
+def age_in_days(stamp, now):
+    if not stamp:
         return None
+    try:
+        dt = datetime.strptime(stamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except (TypeError, ValueError):
+        return None
+    return (now - dt).total_seconds() / 86400.0
 
 
-def main():
-    items = collect()
-    out = os.path.abspath(OUT_PATH)
-
-    # Rewriting on every run would bump "fetched" and produce a daily commit
-    # even when nothing was published, so leave the file alone unless the
-    # posts themselves changed.
-    if existing_items(out) == items:
-        print("no new posts — snapshot already up to date")
-        return
-
-    payload = {
-        "source": FEED_URL,
-        "fetched": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "items": items,
-    }
-
-    with open(out, "w", encoding="utf-8") as fh:
+def save(path, payload):
+    with open(path, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
 
-    print(f"wrote {out} with {len(items)} items; newest: {items[0]['title']}")
+
+def main():
+    out = os.path.abspath(OUT_PATH)
+    now = datetime.now(timezone.utc)
+    stamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    existing = load_existing(out)
+    items, problems = collect()
+
+    if items is None:
+        report = "could not refresh the snapshot:\n  " + "\n  ".join(problems)
+
+        if existing is None:
+            print("ERROR: " + report, file=sys.stderr)
+            print("No usable snapshot exists, so there is nothing to fall back to.", file=sys.stderr)
+            return 1
+
+        # A converter having a bad morning is routine; weeks of silence is not.
+        age = age_in_days(existing.get("checked"), now)
+        if age is not None and age >= STALE_AFTER_DAYS:
+            print("ERROR: " + report, file=sys.stderr)
+            print(
+                "No source has worked for %.0f days - the feed pipeline looks broken, "
+                "not just flaky." % age,
+                file=sys.stderr,
+            )
+            return 1
+
+        since = ("%.1f days ago" % age) if age is not None else "unknown"
+        print("WARNING: " + report)
+        print("Keeping the existing snapshot (last successful refresh: %s)." % since)
+        print("The site is unaffected - it serves the committed snapshot.")
+        return 0
+
+    if existing is None or existing.get("items") != items:
+        save(out, {"source": FEED_URL, "fetched": stamp, "checked": stamp, "items": items})
+        print("wrote %d items; newest: %s" % (len(items), items[0]["title"]))
+        return 0
+
+    # Nothing new. Refresh "checked" occasionally so it stays a meaningful
+    # freshness signal, but not every run, or the timestamp alone would produce
+    # a commit every single day.
+    age = age_in_days(existing.get("checked"), now)
+    if age is None or age >= TOUCH_AFTER_DAYS:
+        payload = dict(existing)
+        payload.setdefault("source", FEED_URL)
+        payload["checked"] = stamp
+        save(out, payload)
+        print("no new posts - refreshed the 'checked' timestamp")
+        return 0
+
+    print("no new posts - snapshot already up to date (checked %.1f days ago)" % age)
+    return 0
 
 
 if __name__ == "__main__":
